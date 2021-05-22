@@ -2,6 +2,7 @@ import React,  { Component } from 'react';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux'
 import  * as productActions from '../store/actions/product.action';
+import  * as cartActions from '../store/actions/cart.actions'
 
 class Product extends Component{
 
@@ -13,8 +14,7 @@ class Product extends Component{
     }
 
     render(){
-        const {products} = this.props
-        console.log(products)
+        const {products, addProductToCart} = this.props 
         return(
         <section className="container content-section">
             <h2 className="section-header">商品列表</h2>
@@ -26,7 +26,7 @@ class Product extends Component{
                     <span className="shop-item-title">{product.title}</span>
                     <div className="shop-item-details">
                         <span className="shop-item-price">￥{product.price}</span>
-                        <button className="btn btn-primary shop-item-button" type="button">加入购物车</button>
+                        <button onClick={ ()=> addProductToCart(product.id)} className="btn btn-primary shop-item-button" type="button">加入购物车</button>
                     </div>
                 </div>
                 ))
@@ -41,6 +41,9 @@ const mapStateToProps = state =>({
     products:state.product
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators(productActions, dispatch)
+const mapDispatchToProps = dispatch => ({
+    ...bindActionCreators(productActions, dispatch),
+    ...bindActionCreators(cartActions, dispatch),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product)
