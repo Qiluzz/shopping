@@ -87,7 +87,9 @@ app.delete("/cart/delete", async (req, res) => {
   // 存储结果
   await writeFile("./data/cart.json", JSON.stringify(cart));
   // 响应
-  res.send({ msg: "商品删除成功" });
+  res.send({
+    msg: "商品删除成功",
+    index:index });
 });
 
 // 更改购物车中的商品数量

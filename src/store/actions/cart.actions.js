@@ -11,3 +11,10 @@ export const loadCarts = createAction('loadCarts')
 
 // 4.将服务器返回购物车列表数据同步到本地购物车中
 export const saveCarts = createAction('saveCarts')
+
+// 5.向服务器发送请求 告诉服务器要删除那个商品
+export const deleteProductFormCart = createAction('deleteProductFormCart')
+
+// 4.删除本地购物车商品
+export const deleteProductFormLocalCart = createAction('deleteProductFormLocalCart')
+
