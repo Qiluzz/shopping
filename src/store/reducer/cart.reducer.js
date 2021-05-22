@@ -2,7 +2,8 @@ import { handleActions as createReducer } from 'redux-actions';
 import {
     addProductToLocalCart,
     saveCarts,
-    deleteProductFormLocalCart
+    deleteProductFormLocalCart,
+    changeLocalProductNumber
 } from '../actions/cart.actions'
 
 const initialState = []
@@ -37,8 +38,21 @@ const handleDeleteProductFormLocalCart =(state, action) =>{
     newState.splice(action.payload, 1)
     return newState
 }
+
+const handleChangeLocalProductNumber = (state, action) => {
+     //将所有的购物车数据拷贝一份
+     const newState = JSON.parse(JSON.stringify(state))
+     //查找商品 如果找到 返回商品 如果没有找到 返回 undfined
+
+     const product = newState.find(product => product.id === action.payload.id)
+   
+    product.count = action.payload.count
+  
+    return newState
+}
 export default createReducer({
     [addProductToLocalCart]: handleAddProductToLocalCart,
     [saveCarts]:handleSaveCarts,
-    [deleteProductFormLocalCart]: handleDeleteProductFormLocalCart
+    [deleteProductFormLocalCart]: handleDeleteProductFormLocalCart,
+    [changeLocalProductNumber]: handleChangeLocalProductNumber
 }, initialState)

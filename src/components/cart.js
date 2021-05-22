@@ -10,8 +10,24 @@ class Cart extends Component{
         const {loadCarts} = this.props
         loadCarts()
     }
+
+    changeProductNumber(cid, event){
+        const {
+            changeServiceProductNumber
+        } = this.props
+        // 获取商品的最新数量
+        const count = event.target.value
+        //向服务器端发送请求
+        changeServiceProductNumber({cid, count})
+
+    }
     render(){
-        const { carts, deleteCart,deleteProductFormCart } = this.props
+        const {
+            carts,
+            deleteCart,
+            deleteProductFormCart,
+            changeServiceProductNumber
+        } = this.props
         return(
         <section className="container content-section">
             <h2 className="section-header">购物车</h2>
@@ -26,12 +42,21 @@ class Cart extends Component{
                     carts && carts.map(cart =>(
                     <div className="cart-row" key={cart.id}>
                         <div className="cart-item cart-column">
-                            <img className="cart-item-image" src={cart.thumbnail} width="100" height="100" />
+                            < img className = "cart-item-image"
+                            src = {
+                                    `http://localhost:3005${cart.thumbnail}`} width="100" height="100" />
                             <span className="cart-item-title">{cart.title}</span>
                         </div>
                         <span className="cart-price cart-column">￥{cart.price}</span>
                         <div className="cart-quantity cart-column">
-                            <input  onChange={()=>{}} className="cart-quantity-input" value = {cart.count} type="number"/>
+                            < input onChange = {
+                                (e) => this.changeProductNumber(cart.id, e)
+                            }
+                            className = "cart-quantity-input"
+                            value = {
+                                cart.count
+                            }
+                            type = "number" / >
                             <button onClick={()=> deleteProductFormCart(cart.id)} className="btn btn-danger" type="button">删除</button>
                         </div>
                     </div>
@@ -41,7 +66,11 @@ class Cart extends Component{
             </div>
             <div className="cart-total">
                 <strong className="cart-total-title">总价</strong>
-                <span className="cart-total-price">￥39.97</span>
+            <span className="cart-total-price">￥{
+                carts.reduce((total,product)=>{
+                    return total += product.count * product.price
+                },0)
+            }</span>
             </div>
         </section>
         )
